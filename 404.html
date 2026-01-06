@@ -3,21 +3,20 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Trading App</title>
+    <title>MarketSage</title>
     <script type="text/javascript">
-        // Single Page Apps for GitHub Pages
-        // MIT License
-        // https://github.com/rafgraph/spa-github-pages
-        var pathSegmentsToKeep = 1;
+        // For HashRouter, simply redirect to the base URL with hash
+        // The hash will be preserved by the browser
+        var basePath = '/marketsage-golden-vision/';
+        var path = window.location.pathname.replace(basePath, '');
 
-        var l = window.location;
-        l.replace(
-            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-            l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-            l.hash
-        );
+        if (path && path !== '/') {
+            // Redirect to base with hash route
+            window.location.replace(basePath + '#/' + path + window.location.search);
+        } else {
+            // Just redirect to base
+            window.location.replace(basePath);
+        }
     </script>
 </head>
 
