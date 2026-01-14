@@ -1,0 +1,5 @@
+Model: BiLSTM (SMOTE) + RobustScaler + Deep XGB Ensemble
+Accuracy: 0.6214028776978417
+Best Threshold: 0.3
+Timestamp: 20260106_0727
+Features: Last, Mean, Std, Lags(1,3,5) | Window: 20 Days

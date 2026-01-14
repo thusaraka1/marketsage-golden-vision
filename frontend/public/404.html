@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>MarketSage</title>
+    <script type="text/javascript">
+        // For HashRouter, simply redirect to the base URL with hash
+        // The hash will be preserved by the browser
+        var basePath = '/marketsage-golden-vision/';
+        var path = window.location.pathname.replace(basePath, '');
+
+        if (path && path !== '/') {
+            // Redirect to base with hash route
+            window.location.replace(basePath + '#/' + path + window.location.search);
+        } else {
+            // Just redirect to base
+            window.location.replace(basePath);
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

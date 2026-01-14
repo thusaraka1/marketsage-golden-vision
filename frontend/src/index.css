@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* MarketSage Design System - Premium Fintech Aesthetic */
+/* Bloomberg Terminal meets Apple Design */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Core Background - Deep Void Gunmetal */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    /* Card surfaces with subtle elevation */
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+
+    /* Popover/Overlay */
+    --popover: 222 47% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary - Glowing Emerald Growth */
+    --primary: 160 84% 39%;
+    --primary-foreground: 222 47% 11%;
+
+    /* Secondary - Muted surfaces */
+    --secondary: 222 30% 18%;
+    --secondary-foreground: 210 40% 90%;
+
+    /* Muted elements */
+    --muted: 222 30% 20%;
+    --muted-foreground: 215 20% 55%;
+
+    /* Accent - Soft emerald glow */
+    --accent: 160 70% 25%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Destructive - Bearish Red */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Borders and inputs */
+    --border: 222 30% 22%;
+    --input: 222 30% 18%;
+    --ring: 160 84% 39%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens for MarketSage */
+    --emerald-glow: 160 84% 39%;
+    --emerald-dim: 160 60% 25%;
+    --gunmetal-deep: 222 47% 8%;
+    --gunmetal-surface: 222 47% 14%;
+    --glass-white: 210 40% 98%;
+    --glass-border: 210 40% 98%;
+
+    /* Gradients */
+    --gradient-emerald: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 70% 50%));
+    --gradient-void: linear-gradient(180deg, hsl(222 47% 11%), hsl(222 47% 6%));
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+
+    /* Shadows */
+    --shadow-emerald: 0 0 20px hsla(160, 84%, 39%, 0.15);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+
+    /* Spotlight effects */
+    --spotlight-emerald: radial-gradient(ellipse 600px 400px at var(--x, 50%) var(--y, 50%), hsla(160, 84%, 39%, 0.08), transparent);
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(180deg, hsl(222 47% 11%), hsl(222 47% 6%));
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .glass-strong {
+    @apply bg-white/10 backdrop-blur-2xl border border-white/15;
+  }
+
+  /* Frosted header */
+  .frosted-header {
+    @apply bg-background/70 backdrop-blur-xl border-b border-white/5;
+  }
+
+  /* Emerald glow effects */
+  .glow-emerald {
+    box-shadow: 0 0 30px hsla(160, 84%, 39%, 0.4),
+      0 0 60px hsla(160, 84%, 39%, 0.2);
+  }
+
+  .glow-emerald-subtle {
+    box-shadow: 0 0 20px hsla(160, 84%, 39%, 0.2);
+  }
+
+  /* Text glow */
+  .text-glow {
+    text-shadow: 0 0 20px hsla(160, 84%, 39%, 0.5);
+  }
+
+  /* Pulsing live indicator */
+  .pulse-live {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Golden ratio containers */
+  .golden-major {
+    flex: 1.618;
+  }
+
+  .golden-minor {
+    flex: 1;
+  }
+
+  /* Premium input styling */
+  .input-premium {
+    @apply bg-white/5 border-2 border-primary/30 rounded-xl px-6 py-4;
+    @apply focus:border-primary focus:ring-2 focus:ring-primary/20;
+    @apply placeholder:text-muted-foreground/50;
+    transition: all 0.3s ease;
+  }
+
+  .input-premium:focus {
+    box-shadow: 0 0 30px hsla(160, 84%, 39%, 0.2);
+  }
+
+  /* Select dropdown styling for dark theme */
+  select.input-premium {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+    padding-right: 48px;
+  }
+
+  select.input-premium option {
+    background-color: hsl(222 47% 11%);
+    color: hsl(210 40% 98%);
+    padding: 12px 16px;
+  }
+
+  select.input-premium option:hover,
+  select.input-premium option:focus,
+  select.input-premium option:checked {
+    background-color: hsl(160 84% 39% / 0.3);
+  }
+
+  /* Card premium */
+  .card-premium {
+    @apply glass rounded-2xl p-6;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Sentiment pills */
+  .pill-bullish {
+    @apply bg-primary/20 text-primary border border-primary/30 px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .pill-bearish {
+    @apply bg-destructive/20 text-destructive border border-destructive/30 px-3 py-1 rounded-full text-xs font-medium;
+  }
+}
+
+@layer utilities {
+
+  /* Text opacity utilities */
+  .text-opacity-90 {
+    @apply text-foreground/90;
+  }
+
+  .text-opacity-70 {
+    @apply text-foreground/70;
+  }
+
+  .text-opacity-50 {
+    @apply text-foreground/50;
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Keyframe Animations */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 8px hsla(160, 84%, 39%, 0.8),
+      0 0 16px hsla(160, 84%, 39%, 0.4);
+  }
+
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 16px hsla(160, 84%, 39%, 1),
+      0 0 32px hsla(160, 84%, 39%, 0.6);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotateX(2deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px hsla(160, 84%, 39%, 0.5));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 20px hsla(160, 84%, 39%, 0.8));
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(222 47% 8%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(222 30% 25%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(160 84% 39%);
+}

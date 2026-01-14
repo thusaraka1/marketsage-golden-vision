@@ -1,0 +1,73 @@
+1️⃣ Functional Requirements (FR)
+
+Me widihata system eka user eken expect karana actions saha features cover karai:
+
+User Login / Authentication (optional)
+
+User login karanna puluwan (if admin or personalized).
+
+Basic authentication (username/password).
+
+Company Selection
+
+User select karanna puluwan company ekak dropdown ekak use karala.
+
+Company list: e.g., 5 major companies.
+
+Prediction Display
+
+Actual vs Predicted chart display karanna.
+
+Next 30-day forecast chart display karanna.
+
+Charts update wenna ona selected company ekata.
+
+Metrics Display
+
+Model name (LSTM) display karanna.
+
+Accuracy metrics display karanna: RMSE, MAE.
+
+Historical Data View (optional)
+
+User view karanna puluwan past stock prices table ekak or chart ekak.
+
+News / Updates (optional)
+
+Stock-related news display karanna home page ekata.
+
+Admin Features (optional)
+
+CSV upload karanna new data insert karanna database ekata.
+
+Model retraining trigger karanna puluwan (if automated ML updates).
+
+2️⃣ Non-Functional Requirements (NFR)
+
+Performance
+
+Charts load under 2 seconds after company selection.
+
+Usability
+
+Clean UI, easy navigation, responsive design for desktop & mobile.
+
+Reliability
+
+Data accuracy guaranteed, errors handled gracefully.
+
+Scalability
+
+Add more companies in future without major UI/logic changes.
+
+Security
+
+If login included, passwords stored securely (hashed).
+
+Sensitive data protected.
+
+Maintainability
+
+Code modular (backend + frontend separate).
+
+Easy to update model or dataset.
