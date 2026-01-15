@@ -2,10 +2,17 @@
 setlocal EnableDelayedExpansion
 title MarketSage Setup
 
+REM ================================================================================
+REM Get the directory where this script is located (handles running from any path)
+REM ================================================================================
+set "SCRIPT_DIR=%~dp0"
+cd /d "%SCRIPT_DIR%"
+
 echo ===============================================================================
 echo MarketSage One-Click Setup
 echo ===============================================================================
 echo This script will install all dependencies for Frontend, Backend, and AI Model.
+echo Working Directory: %CD%
 echo.
 
 REM 1. Check for Python
@@ -39,6 +46,16 @@ if not exist "venv_ml" (
 
 echo Activating virtual environment and installing AI dependencies...
 call venv_ml\Scripts\activate.bat
+
+REM Check if requirements.txt exists before trying to install
+if not exist "backend\prediction_api\requirements.txt" (
+    echo [ERROR] requirements.txt not found at: backend\prediction_api\requirements.txt
+    echo Current directory: %CD%
+    echo Please make sure you are running this script from the project root.
+    pause
+    exit /b 1
+)
+
 pip install -r backend\prediction_api\requirements.txt
 if errorlevel 1 (
     echo [ERROR] Failed to install Python dependencies.
@@ -49,6 +66,11 @@ call deactivate
 echo.
 
 echo [2/4] Installing Node Backend Dependencies...
+if not exist "backend\node_server\package.json" (
+    echo [ERROR] package.json not found at: backend\node_server\
+    pause
+    exit /b 1
+)
 pushd backend\node_server
 call npm install
 if errorlevel 1 (
@@ -61,6 +83,11 @@ popd
 echo.
 
 echo [3/4] Installing Frontend Dependencies...
+if not exist "frontend\package.json" (
+    echo [ERROR] package.json not found at: frontend\
+    pause
+    exit /b 1
+)
 pushd frontend
 call npm install
 if errorlevel 1 (
