@@ -45,11 +45,17 @@ import xgboost as xgb          # XGBoost gradient boosting library
 # CONFIGURATION CONSTANTS
 # =============================================================================
 
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Project root is two levels up from backend/prediction_api/
+PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+
 # Directory containing trained model files (BiLSTM, XGBoost, Scaler)
-MODEL_DIR = r"d:\nethumi final research\models\ensemble"
+MODEL_DIR = os.path.join(PROJECT_ROOT, "models", "ensemble")
 
 # Directory containing historical stock data CSV files
-DATA_DIR = r"d:\nethumi final research\data\historical"
+DATA_DIR = os.path.join(PROJECT_ROOT, "data", "historical")
 
 # Model hyperparameters (must match training configuration)
 SEQ_LENGTH = 20      # Number of days of historical data to use for prediction (20-day window)
