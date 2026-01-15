@@ -1,7 +1,16 @@
+# Flask Web Framework
 flask>=2.2.0
 flask-cors>=3.0.0
-tensorflow>=2.10.0
+
+# Machine Learning - TensorFlow
+# Note: TensorFlow requires Python 3.9-3.11 (64-bit)
+# Use tensorflow-cpu if you don't have GPU
+tensorflow>=2.10.0,<2.16.0
+
+# XGBoost for ensemble model
 xgboost>=1.7.0
+
+# Data Processing
 pandas>=1.5.0
-numpy>=1.23.0
+numpy>=1.23.0,<2.0.0
 scikit-learn>=1.1.0
