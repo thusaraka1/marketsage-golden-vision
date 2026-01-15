@@ -148,101 +148,52 @@ router.post('/register', async (req, res) => {
 });
 
 // =============================================================================
-// POST /api/auth/login - User Login
+// POST /api/auth/login - Regular User Login ONLY
 // =============================================================================
 
 /**
- * Authenticate user and issue JWT token
+ * Authenticate REGULAR users and issue JWT token
+ * NOTE: This endpoint does NOT check admin credentials.
+ *       Use /api/auth/admin-login for Super Admin access.
  * 
  * Request Body:
  * {
- *   email: string (required) - User's email address OR Username
+ *   email: string (required) - User's email address
  *   password: string (required) - User's password
  * }
- * 
- * Response:
- * - 200 OK: { message, user, token }
- * - 400 Bad Request: Missing email or password
- * - 401 Unauthorized: Invalid credentials
- * - 403 Forbidden: Account suspended
- * - 500 Error: Server error
  */
 router.post('/login', async (req, res) => {
     try {
-        // Extract login credentials (email field can be username for admin)
         const { email, password } = req.body;
 
-        // -------------------------------------------------------------------------
         // Input Validation
-        // -------------------------------------------------------------------------
         if (!email || !password) {
-            return res.status(400).json({ error: 'Username/Email and password are required' });
+            return res.status(400).json({ error: 'Email and password are required' });
         }
 
-        // -------------------------------------------------------------------------
-        // Check for Super Admin (admins table)
-        // -------------------------------------------------------------------------
-        const adminUser = db.prepare('SELECT * FROM admins WHERE username = ?').get(email);
-
-        if (adminUser) {
-            const validPassword = await bcrypt.compare(password, adminUser.password_hash);
-            if (validPassword) {
-                const token = generateToken({ ...adminUser, role: 'admin' });
-                console.log(`✓ Super Admin logged in: ${email}`);
-                return res.json({
-                    message: 'Admin Login successful',
-                    user: {
-                        id: adminUser.id,
-                        name: 'Super Admin',
-                        email: 'admin@marketsage.com', // Placeholder
-                        username: adminUser.username,
-                        isAdmin: true,
-                        isPro: true,
-                        plan: 'Enterprise'
-                    },
-                    token
-                });
-            }
-        }
-
-        // -------------------------------------------------------------------------
-        // Find User by Email (Standard Users)
-        // -------------------------------------------------------------------------
+        // Find User by Email (Standard Users ONLY - no admin check)
         const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
 
-        // Return generic error (don't reveal if email exists for security)
         if (!user) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
-        // -------------------------------------------------------------------------
         // Verify Password
-        // -------------------------------------------------------------------------
-
-        // Compare provided password with stored hash
         const validPassword = await bcrypt.compare(password, user.password_hash);
         if (!validPassword) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
-        // -------------------------------------------------------------------------
         // Check Account Status
-        // -------------------------------------------------------------------------
-
-        // Prevent suspended users from logging in
         if (user.status === 'Suspended') {
             return res.status(403).json({ error: 'Account is suspended' });
         }
 
-        // -------------------------------------------------------------------------
         // Generate JWT Token
-        // -------------------------------------------------------------------------
         const token = generateToken(user);
-
-        // Log successful login
         console.log(`✓ User logged in: ${email}`);
 
-        // Return success response
+        // Return success response (isAdmin is always false for regular users)
         res.json({
             message: 'Login successful',
             user: {
@@ -250,7 +201,8 @@ router.post('/login', async (req, res) => {
                 name: user.name,
                 email: user.email,
                 isPro: Boolean(user.is_pro),
-                plan: user.plan
+                plan: user.plan,
+                isAdmin: false
             },
             token
         });
@@ -258,6 +210,67 @@ router.post('/login', async (req, res) => {
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: 'Login failed' });
+    }
+});
+
+// =============================================================================
+// POST /api/auth/admin-login - Super Admin Login ONLY
+// =============================================================================
+
+/**
+ * Authenticate SUPER ADMIN only - for admin panel access
+ * NOTE: This endpoint ONLY checks the admins table, not regular users.
+ * 
+ * Request Body:
+ * {
+ *   username: string (required) - Admin username
+ *   password: string (required) - Admin password
+ * }
+ */
+router.post('/admin-login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Input Validation
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
+
+        // Check for Super Admin (admins table ONLY)
+        const adminUser = db.prepare('SELECT * FROM admins WHERE username = ?').get(username);
+
+        if (!adminUser) {
+            return res.status(401).json({ error: 'Invalid admin credentials' });
+        }
+
+        // Verify Password
+        const validPassword = await bcrypt.compare(password, adminUser.password_hash);
+        if (!validPassword) {
+            return res.status(401).json({ error: 'Invalid admin credentials' });
+        }
+
+        // Generate JWT Token
+        const token = generateToken({ ...adminUser, role: 'admin' });
+        console.log(`✓ Super Admin logged in: ${username}`);
+
+        // Return success response
+        res.json({
+            message: 'Admin Login successful',
+            user: {
+                id: adminUser.id,
+                name: 'Super Admin',
+                email: 'admin@marketsage.com',
+                username: adminUser.username,
+                isAdmin: true,
+                isPro: true,
+                plan: 'Enterprise'
+            },
+            token
+        });
+
+    } catch (error) {
+        console.error('Admin login error:', error);
+        res.status(500).json({ error: 'Admin login failed' });
     }
 });
 

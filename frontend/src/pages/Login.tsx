@@ -7,36 +7,24 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { login } = useAuth();
+    const { adminLogin } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            await login(email, password);
+            // Use adminLogin - only checks admins table, not regular users
+            await adminLogin(username, password);
 
-            // Get updated user data from localStorage after login
-            const storedUser = localStorage.getItem('marketsage_user');
-            if (storedUser) {
-                const userData = JSON.parse(storedUser);
-
-                // Only Super Admins can access the admin panel
-                if (userData.isAdmin === true) {
-                    navigate('/admin');
-                } else {
-                    // Regular users cannot access admin panel
-                    toast.error('Access Denied: Admin privileges required');
-                    // Redirect to home page instead
-                    navigate('/');
-                }
-            }
+            // If successful, navigate to admin panel
+            navigate('/admin');
         } catch (error) {
-            // Error handling is done in AuthContext, but we can double ensure here if needed
-            console.error("Login failed", error);
+            // Error handling is done in AuthContext
+            console.error("Admin login failed", error);
         } finally {
             setIsSubmitting(false);
         }
@@ -90,14 +78,14 @@ const Login = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2 group">
-                            <Label htmlFor="email" className="text-sm font-medium text-muted-foreground group-focus-within:text-emerald-glow transition-colors">Username</Label>
+                            <Label htmlFor="username" className="text-sm font-medium text-muted-foreground group-focus-within:text-emerald-glow transition-colors">Username</Label>
                             <input
-                                id="email"
+                                id="username"
                                 type="text"
                                 placeholder="admin"
                                 className="w-full input-premium bg-white/5 border-white/10 focus:border-emerald-glow/50 text-white placeholder:text-muted-foreground/30"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
                         </div>

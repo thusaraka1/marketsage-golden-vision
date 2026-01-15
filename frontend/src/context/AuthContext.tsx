@@ -15,6 +15,7 @@ interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
+    adminLogin: (username: string, password: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => void;
     upgradeToPro: () => Promise<void>;
@@ -63,6 +64,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             closeAuthModal();
         } catch (error) {
             toast.error(error instanceof Error ? error.message : 'Login failed');
+            throw error;
+        }
+    };
+
+    // Admin login - calls /api/auth/admin-login (Super Admin only)
+    const adminLogin = async (username: string, password: string) => {
+        try {
+            const response = await fetch(`${API_URL}/auth/admin-login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Admin login failed');
+            }
+
+            setUser(data.user);
+            localStorage.setItem('marketsage_user', JSON.stringify(data.user));
+            localStorage.setItem('marketsage_token', data.token);
+            toast.success('Welcome, Super Admin!');
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : 'Admin login failed');
             throw error;
         }
     };
@@ -140,6 +166,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             user,
             isLoading,
             login,
+            adminLogin,
             register,
             logout,
             upgradeToPro,
