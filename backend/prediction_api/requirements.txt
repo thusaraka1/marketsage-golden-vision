@@ -2,10 +2,9 @@
 flask>=2.2.0
 flask-cors>=3.0.0
 
-# Machine Learning - TensorFlow
-# Note: TensorFlow requires Python 3.9-3.11 (64-bit)
-# Use tensorflow-cpu if you don't have GPU
-tensorflow>=2.10.0,<2.16.0
+# Machine Learning - TensorFlow/Keras
+# IMPORTANT: Model was saved with Keras 3.x, so we need TensorFlow 2.16+
+tensorflow>=2.16.0
 
 # XGBoost for ensemble model
 xgboost>=1.7.0
